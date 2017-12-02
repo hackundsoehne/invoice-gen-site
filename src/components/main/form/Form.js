@@ -1,5 +1,5 @@
 import React from "react";
-import { TextField, DatePicker } from 'material-ui'
+import { TextField, DatePicker, DropDownMenu, MenuItem } from 'material-ui'
 import areIntlLocalesSupported from 'intl-locales-supported'
 const Immutable = require('immutable');
 
@@ -20,6 +20,7 @@ export default class Home extends React.Component {
     this.state = {
       company_name: '',
       controlledDate: null,
+      value: 1,
       DateTimeFormat: DateTimeFormat,
       locale: 'de'
     }
@@ -34,12 +35,32 @@ export default class Home extends React.Component {
   handleChange = (event, date) => {
     this.setState({
       controlledDate: date,
-    });
-  };
+    })
+  }
+
+  _handleLanguageChange = (event, index, value) => this.setState({value})
 
   render() {
     return (
-      <div className="db">
+      <div className="db pt3">
+        <div className="dib pa4 v-top">
+          <p className="bf">Zieldaten</p>
+          <p className="bf f6 tl pt3" style={{marginBottom: '0'}}>Für:</p>
+          <DropDownMenu value={this.state.value}
+                        selectedMenuItemStyle={{color: '#A63324'}}
+                        onChange={this._handleLanguageChange}>
+            <MenuItem value={1} primaryText="Hack & Söhne" />
+            <MenuItem value={2} primaryText="talKIT" />
+          </DropDownMenu>
+          <p className="bf f6 tl pt3" style={{marginBottom: '0'}}>Zielsprache:</p>
+          <DropDownMenu value={this.state.value}
+                        selectedMenuItemStyle={{color: '#A63324'}}
+                        onChange={this._handleLanguageChange}>
+            <MenuItem value={1} primaryText="Deutsch" />
+            <MenuItem value={2} primaryText="Englisch" />
+          </DropDownMenu>
+          <br />
+        </div>
         <div className="dib pa4">
           <p className="bf">Addresse des Unternehmens</p>
           <TextField

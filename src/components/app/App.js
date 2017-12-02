@@ -1,6 +1,5 @@
 import React from "react";
 import MuiTheme from "../app/MuiTheme";
-import Footer from "./footer/Footer";
 import injectTapEventPlugin from "react-tap-event-plugin";
 import PropTypes from 'prop-types';
 
@@ -19,7 +18,6 @@ export default class App extends React.Component {
     return (
       <MuiTheme>
         {this.props.children}
-        <Footer/>
       </MuiTheme>
     )
   }

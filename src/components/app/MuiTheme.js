@@ -11,7 +11,9 @@ export default class MuiTheme extends React.Component {
         primary3Color: "#A63324"
       },
       datePicker: {
-        background: '#A63324'
+        overlayStyle: {
+          backgroundColor: '#A63324'
+        }
       }
     })
 
