@@ -12,3 +12,4 @@ bundle.min.js
 # Other
 *.log
 package-lock.json
+.DS_Store

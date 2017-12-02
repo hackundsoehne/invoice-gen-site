@@ -21,7 +21,7 @@ export default class Home extends React.Component {
       <div className="main">
         <div className="main-hero">
           <h1 className="main-title">Invoice Generator</h1>
-          <h4 className="main-subtitle">A search engine for <span className="primary-color">Java</span> code</h4>
+          <h4 className="main-subtitle">Erzeuge deine Rechnung einfach und schnell.</h4>
         </div>
         <div className="main-body">
           <div className="main-body-intro-message" style={{display: 'table'}}>
