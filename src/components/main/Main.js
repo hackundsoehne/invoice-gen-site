@@ -1,4 +1,6 @@
 import React from "react";
+import Form from './form/Form'
+import Table from './table/Table'
 const Immutable = require('immutable');
 
 export default class Home extends React.Component {
@@ -19,14 +21,15 @@ export default class Home extends React.Component {
   render() {
     return (
       <div className="main">
-        <div className="main-hero">
-          <h1 className="main-title">Invoice Generator</h1>
-          <h4 className="main-subtitle">Erzeuge deine Rechnung einfach und schnell.</h4>
+        <div className="">
+          <h1 className="pt5 f1 white tc hf">Invoice Generator</h1>
+          <h4 className="pt3 f5 white tc hf">Erzeuge deine Rechnung einfach und schnell.</h4>
         </div>
-        <div className="main-body">
+        <div className="pt4">
           <div className="main-body-intro-message" style={{display: 'table'}}>
-            <div style={{display: "table-cell", verticalAlign: "middle"}}>
-              Test
+            <div className='bf' style={{display: "table-cell", verticalAlign: "middle"}}>
+              <Form/>
+              <Table/>
             </div>
           </div>
         </div>

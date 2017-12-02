@@ -1,25 +1,22 @@
 // Colors
 $primary-color: #C62828;
-$background-color-body: #E0E0E0;
+$background-color-body: white;
 $background-color-hero: #212121;
 $highlight-color: #FFCDD2;
 
-.primary-color {
-  color: $primary-color
+.pc {
+  color: $primary-color !important;
 }
 
 // Fonts
-@font-face {
-  font-family: Header-Font;
-  src: url("./resources/fonts/Titillium/Titillium-Thin.otf");
+@import url('https://fonts.googleapis.com/css?family=Raleway:200');
+@import url('https://fonts.googleapis.com/css?family=Raleway:300|Source+Sans+Pro:300');
+
+.hf {
+  font-family: Raleway, sans-serif;
+  color: #a63324;
 }
 
-@font-face {
-  font-family: Body-Font;
-  src: url("./resources/fonts/Monaco.ttf");
-}
-
-@font-face {
-  font-family: Code-Font;
-  src: url("./resources/fonts/Monaco.ttf");
+.bf {
+  font-family: Source Sans Pro, sans-serif;
 }

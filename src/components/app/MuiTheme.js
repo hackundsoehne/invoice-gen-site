@@ -6,9 +6,12 @@ export default class MuiTheme extends React.Component {
   render() {
     const muiTheme = getMuiTheme({
       palette: {
-        primary1Color: "#C62828",
-        primary2Color: "#C62828",
-        primary3Color: "#C62828"
+        primary1Color: "#A63324",
+        primary2Color: "#A63324",
+        primary3Color: "#A63324"
+      },
+      datePicker: {
+        background: '#A63324'
       }
     })
 
