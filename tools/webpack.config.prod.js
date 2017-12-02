@@ -1,21 +1,20 @@
-var webpack = require('webpack');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
+const webpack = require('webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: "./src/index.js",
     module: {
-        loaders: [
-            {test: /\.scss|\.sass|\.css$/, loaders: ["style", "css", "sass"], exclude: /node_modules/},
+        rules: [
+            {test: /\.scss|\.sass|\.css$/, loader: ["style-loader", "css-loader", "sass-loader"], exclude: /node_modules/},
             {test: /\.ttf$|\.otf$|\.eot$|\.woff$|\.woff2$/, loader: "url-loader?limit=100000"},
             {test: /\.jpe?g$|\.png$/, loader: "file-loader"},
-            {test: /\.svg$/, loader: "svg-inline"},
+            {test: /\.svg$/, loader: "svg-inline-loader"},
             {test: /load-image/, loader: 'imports?define=>false'},
-            {test: /\.json$/, loader: "json-loader"},
             {test: /\.jsx?$/, exclude: /(node_modules)/, loader: 'babel-loader'}
         ]
     },
     output: {
-        path: "./build",
+        path: __dirname + "/../build",
         filename: "bundle.min.js"
     },
     plugins: [
@@ -25,8 +24,7 @@ module.exports = {
         new CopyWebpackPlugin([
             { from: 'static'}
         ]),
-        new webpack.optimize.DedupePlugin(),
-        new webpack.optimize.OccurenceOrderPlugin(),
+        new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.optimize.UglifyJsPlugin({mangle: false, sourcemap: false})
     ]
 };
