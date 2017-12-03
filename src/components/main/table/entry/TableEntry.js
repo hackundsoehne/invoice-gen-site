@@ -20,7 +20,7 @@ export default class TableEntry extends React.Component {
   componentWillUnmount() {
   }
 
-  render () {
+  render() {
     let style
 
     if (this.state.type === ENV_VARS.CONSTANTS.CONSUMER) {
