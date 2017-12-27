@@ -1,10 +1,10 @@
 import React from 'react'
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table'
+import {List, ListItem} from 'material-ui/List'
 import FontIcon from 'material-ui/FontIcon'
 import IconButton from 'material-ui/IconButton'
 import UpdateDialog from '../dialog/UpdateDialog'
 import RemoveDialog from '../dialog/RemoveDialog'
-import TableEntry from "./entry/TableEntry"
 import * as DialogActions from '../../../actions/dialogActions'
 import DialogStore from '../../../stores/dialogStore'
 const Immutable = require('immutable')
@@ -27,22 +27,53 @@ export default class TableElement extends React.Component {
     // EntryStore.removeChangeListener(this._updateEntries.bind(this))
   }
 
-  isSelected = (index) => {
-    return this.state.selected.indexOf(index) !== -1;
-  };
+  _isSelected = (index) => {
+    return this.state.selected.indexOf(index) !== -1
+  }
 
   handleRowSelection = (selectedRows) => {
     this.setState({
       selected: selectedRows,
-    });
-  };
+    })
+  }
 
   _updateDialogOpen = () => {
     DialogActions.displayUpdateDialog(true)
+    this._fillTable()
   }
 
   _removeDialogOpen = () => {
     DialogActions.displayRemoveDialog(true)
+  }
+
+  _fillTable = () => {
+    let data = [{
+      pos: 1,
+      amount: 2,
+      name: 'Tesla',
+      info: ['info 1', 'info 2', 'info 3'],
+      price: 1000
+    }]
+
+    let entriesList = Immutable.List(data)
+
+    entriesList = entriesList.map((entry, index) =>
+      <TableRow key={index} selected={this._isSelected(index)}>
+        <TableRowColumn>{entry.pos}</TableRowColumn>
+        <TableRowColumn>{entry.amount}</TableRowColumn>
+        <TableRowColumn>{entry.name}</TableRowColumn>
+        <TableRowColumn>
+          <List>
+            {entry.info.map((text, indexInf) => <ListItem key={index * 10 + indexInf} primaryText={text}/>)}
+          </List>
+        </TableRowColumn>
+        <TableRowColumn>{entry.price}</TableRowColumn>
+      </TableRow>
+    )
+
+    this.setState({
+      entries: entriesList
+    })
   }
 
   _updateEntries = () => {
@@ -80,6 +111,7 @@ export default class TableElement extends React.Component {
   }
 
   render () {
+
     return (
       <div className="">
         <p className="bf">Bestellungen</p>
@@ -92,30 +124,13 @@ export default class TableElement extends React.Component {
                   <TableHeaderColumn>Menge</TableHeaderColumn>
                   <TableHeaderColumn>Bezeichnung</TableHeaderColumn>
                   <TableHeaderColumn>Zusätzliche Informationen</TableHeaderColumn>
-                  <TableHeaderColumn>Betrag</TableHeaderColumn>
+                  <TableHeaderColumn>Betrag (EUR)</TableHeaderColumn>
                 </TableRow>
               </TableHeader>
-              <TableBody>
-                <TableRow selected={this.isSelected(0)}>
-                  <TableRowColumn>1</TableRowColumn>
-                  <TableRowColumn>John Smith</TableRowColumn>
-                  <TableRowColumn>Employed</TableRowColumn>
-                </TableRow>
-                <TableRow selected={this.isSelected(1)}>
-                  <TableRowColumn>2</TableRowColumn>
-                  <TableRowColumn>Randal White</TableRowColumn>
-                  <TableRowColumn>Unemployed</TableRowColumn>
-                </TableRow>
-                <TableRow selected={this.isSelected(2)}>
-                  <TableRowColumn>3</TableRowColumn>
-                  <TableRowColumn>Stephanie Sanders</TableRowColumn>
-                  <TableRowColumn>Employed</TableRowColumn>
-                </TableRow>
-                <TableRow selected={this.isSelected(3)}>
-                  <TableRowColumn>4</TableRowColumn>
-                  <TableRowColumn>Steve Brown</TableRowColumn>
-                  <TableRowColumn>Employed</TableRowColumn>
-                </TableRow>
+              <TableBody
+                deselectOnClickaway={false}
+              >
+                {this.state.entries}
               </TableBody>
             </Table>
           </div>

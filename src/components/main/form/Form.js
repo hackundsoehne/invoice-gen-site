@@ -48,6 +48,7 @@ export default class Home extends React.Component {
 
   render() {
     const {hsText, hsFont, hsColor} = styles;
+
     return (
       <div className
              ="db pt3">
