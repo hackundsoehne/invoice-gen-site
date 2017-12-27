@@ -8,7 +8,7 @@ export var initFetch = function (code, type, page) {
     actionType: FetchConstants.FETCH_INIT,
     code: code,
     type: type,
-    page: page
+    page: pagection RecentFiles
   }
   startLoadingAnimation()
   sendRequest(action)

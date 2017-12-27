@@ -2,8 +2,11 @@ import React from 'react'
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table'
 import FontIcon from 'material-ui/FontIcon'
 import IconButton from 'material-ui/IconButton'
+import UpdateDialog from '../dialog/UpdateDialog'
+import RemoveDialog from '../dialog/RemoveDialog'
 import TableEntry from "./entry/TableEntry"
-// import EntryStore from "../../../stores/entryStore"
+import * as DialogActions from '../../../actions/dialogActions'
+import DialogStore from '../../../stores/dialogStore'
 const Immutable = require('immutable')
 
 export default class TableElement extends React.Component {
@@ -17,7 +20,7 @@ export default class TableElement extends React.Component {
   }
 
   componentDidMount() {
-    // EntryStore.addChangeListener(this._updateEntries.bind(this))
+    // DialogStore.addChangeListener(this._toggle.bind(this))
   }
 
   componentWillUnmount() {
@@ -33,6 +36,14 @@ export default class TableElement extends React.Component {
       selected: selectedRows,
     });
   };
+
+  _updateDialogOpen = () => {
+    DialogActions.displayUpdateDialog(true)
+  }
+
+  _removeDialogOpen = () => {
+    DialogActions.displayRemoveDialog(true)
+  }
 
   _updateEntries = () => {
     // let entriesList = Immutable.List(EntryStore.getEntries())
@@ -110,16 +121,21 @@ export default class TableElement extends React.Component {
           </div>
         </div>
         <div className="fr pr4">
-          <IconButton tooltip="Bestellung hinzufügen">
+          <IconButton tooltip="Bestellung hinzufügen"
+            onClick={this._updateDialogOpen}>
             <FontIcon className="material-icons">add</FontIcon>
           </IconButton>
-          <IconButton tooltip="Bestellung entfernen">
+          <IconButton tooltip="Bestellung entfernen"
+            onClick={this._removeDialogOpen}>
             <FontIcon className="material-icons">remove</FontIcon>
           </IconButton>
-          <IconButton tooltip="Bestellung bearbeiten">
+          <IconButton tooltip="Bestellung bearbeiten"
+            onClick={this._updateDialogOpen}>
             <FontIcon className="material-icons">edit</FontIcon>
           </IconButton>
         </div>
+        <UpdateDialog/>
+        <RemoveDialog order={this.state.selected}/>
       </div>
     )
   }
