@@ -1,125 +1,134 @@
 import React from 'react'
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table'
+import {List, ListItem} from 'material-ui/List'
 import FontIcon from 'material-ui/FontIcon'
 import IconButton from 'material-ui/IconButton'
-import TableEntry from "./entry/TableEntry"
-// import EntryStore from "../../../stores/entryStore"
-const Immutable = require('immutable')
+import UpdateDialog from '../dialog/UpdateDialog'
+import RemoveDialog from '../dialog/RemoveDialog'
+import * as DialogActions from '../../../actions/dialogActions'
+import OrderStore from '../../../stores/orderStore'
+import Immutable from 'immutable'
 
 export default class TableElement extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      entries: [],
-      selected: []
+      edit: false,
+      entries: Immutable.List(),
+      selected: -1
     }
   }
 
   componentDidMount() {
-    // EntryStore.addChangeListener(this._updateEntries.bind(this))
+    OrderStore.addChangeListener(this._handleOrderChange)
   }
 
   componentWillUnmount() {
-    // EntryStore.removeChangeListener(this._updateEntries.bind(this))
+    OrderStore.removeChangeListener(this._handleOrderChange)
   }
 
-  isSelected = (index) => {
-    return this.state.selected.indexOf(index) !== -1;
-  };
+  _isSelected = (index) => {
+    return this.state.selected === index
+  }
 
-  handleRowSelection = (selectedRows) => {
+  _handleRowSelection = (selectedRow) => {
     this.setState({
-      selected: selectedRows,
-    });
-  };
-
-  _updateEntries = () => {
-    // let entriesList = Immutable.List(EntryStore.getEntries())
-    // entriesList = entriesList.map(entry => <TableRow selected={entry.checked}>
-    //   <TableEntry
-    //     type={entry.type}
-    //     meterId={entry.meterId}
-    //     normalValue={entry.normalValue}
-    //     buyingValue={entry.buyingValue}
-    //     checked={entry.checked}
-    //   />
-    // </TableRow>)
-    //
-    // this.setState({
-    //   entries: []
-    // })
-    //
-    // this.setState({
-    //   entries: entriesList
-    // })
+      selected: selectedRow[0]
+    })
   }
 
-  _handleCellClick = (rowNumber, columnNumber, evt) => {
-    // let entryState = EntryStore.getEntryStates()[rowNumber].checked
-    //
-    // let value
-    // if (!entryState) {
-    //   value = EntryStore.getEntries()[rowNumber].buyingValue
-    // } else {
-    //   value = EntryStore.getEntries()[rowNumber].normalValue
-    // }
-    //
-    // EntryStore.updateEntryState(rowNumber, !entryState, value)
+  _handleOrderChange = () => {
+    this.setState({
+      entries: OrderStore.getOrders(),
+      selected: -1
+    })
   }
 
-  render () {
+  _fillTable = () => {
+    return this.state.entries.map((entry, index) =>
+      <TableRow key={index} selected={this._isSelected(index)}>
+        <TableRowColumn>{index + 1}</TableRowColumn>
+        <TableRowColumn>{entry.amount}</TableRowColumn>
+        <TableRowColumn>{entry.description}</TableRowColumn>
+        <TableRowColumn>
+          <List>
+            {entry.infos.map((text, indexInf) => <ListItem key={index * 10 + indexInf} primaryText={text}/>)}
+          </List>
+        </TableRowColumn>
+        <TableRowColumn>{entry.price}</TableRowColumn>
+      </TableRow>
+    )
+  }
+
+  _addOrder = () => {
+    this.setState({
+      edit: false
+    })
+
+    DialogActions.displayUpdateDialog(true)
+  }
+
+  _removeOrder = () => {
+    if (this.state.selected === undefined || this.state.selected === -1) {
+      return
+    }
+
+    DialogActions.displayRemoveDialog(true)
+  }
+
+  _updateOrder = () => {
+    if (this.state.selected === undefined || this.state.selected === -1) {
+      return
+    }
+
+    this.setState({
+      edit: true
+    })
+
+    DialogActions.displayUpdateDialog(true)
+  }
+
+  render() {
     return (
       <div className="">
         <p className="bf">Bestellungen</p>
         <div className="pt4 pl4 pr4" style={{width: '70vw'}}>
           <div className="table">
-            <Table onRowSelection={this.handleRowSelection}>
+            <Table onRowSelection={this._handleRowSelection}>
               <TableHeader>
                 <TableRow>
                   <TableHeaderColumn>Position</TableHeaderColumn>
                   <TableHeaderColumn>Menge</TableHeaderColumn>
                   <TableHeaderColumn>Bezeichnung</TableHeaderColumn>
                   <TableHeaderColumn>Zusätzliche Informationen</TableHeaderColumn>
-                  <TableHeaderColumn>Betrag</TableHeaderColumn>
+                  <TableHeaderColumn>Betrag (EUR)</TableHeaderColumn>
                 </TableRow>
               </TableHeader>
-              <TableBody>
-                <TableRow selected={this.isSelected(0)}>
-                  <TableRowColumn>1</TableRowColumn>
-                  <TableRowColumn>John Smith</TableRowColumn>
-                  <TableRowColumn>Employed</TableRowColumn>
-                </TableRow>
-                <TableRow selected={this.isSelected(1)}>
-                  <TableRowColumn>2</TableRowColumn>
-                  <TableRowColumn>Randal White</TableRowColumn>
-                  <TableRowColumn>Unemployed</TableRowColumn>
-                </TableRow>
-                <TableRow selected={this.isSelected(2)}>
-                  <TableRowColumn>3</TableRowColumn>
-                  <TableRowColumn>Stephanie Sanders</TableRowColumn>
-                  <TableRowColumn>Employed</TableRowColumn>
-                </TableRow>
-                <TableRow selected={this.isSelected(3)}>
-                  <TableRowColumn>4</TableRowColumn>
-                  <TableRowColumn>Steve Brown</TableRowColumn>
-                  <TableRowColumn>Employed</TableRowColumn>
-                </TableRow>
+              <TableBody
+                deselectOnClickaway={false}
+              >
+                {this._fillTable()}
               </TableBody>
             </Table>
           </div>
         </div>
         <div className="fr pr4">
-          <IconButton tooltip="Bestellung hinzufügen">
+          <IconButton tooltip="Bestellung hinzufügen"
+            onClick={this._addOrder}>
             <FontIcon className="material-icons">add</FontIcon>
           </IconButton>
-          <IconButton tooltip="Bestellung entfernen">
+          <IconButton tooltip="Bestellung entfernen"
+            onClick={this._removeOrder}>
             <FontIcon className="material-icons">remove</FontIcon>
           </IconButton>
-          <IconButton tooltip="Bestellung bearbeiten">
+          <IconButton tooltip="Bestellung bearbeiten"
+            onClick={this._updateOrder}>
             <FontIcon className="material-icons">edit</FontIcon>
           </IconButton>
         </div>
+        <UpdateDialog order={this.state.selected} edit={this.state.edit}/>
+        <RemoveDialog order={this.state.selected}/>
       </div>
     )
   }

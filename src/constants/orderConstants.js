@@ -1,0 +1,5 @@
+export default {
+  ADD_ORDER: 'ADD_ORDER',
+  REMOVE_ORDER: 'REMOVE_ORDER',
+  UPDATE_ORDER: 'UPDATE_ORDER'
+}

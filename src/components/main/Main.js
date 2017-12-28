@@ -1,22 +1,9 @@
-import React from "react";
+import React from 'react'
 import Form from './form/Form'
-import Table from './table/Table'
-import Confirm from './confirm/Confirm'
-const Immutable = require('immutable');
 
 export default class Home extends React.Component {
-
   constructor(props) {
     super(props)
-
-    this.state = {
-    }
-  }
-
-  componentDidMount() {
-  }
-
-  componentWillUnmount() {
   }
 
   render() {
@@ -28,10 +15,8 @@ export default class Home extends React.Component {
         </div>
         <div className="pt4">
           <div className="main-body-intro-message" style={{display: 'table'}}>
-            <div className='bf' style={{display: "table-cell", verticalAlign: "middle"}}>
+            <div className='bf' style={{display: 'table-cell', verticalAlign: 'middle'}}>
               <Form/>
-              <Table/>
-              <Confirm/>
             </div>
           </div>
         </div>

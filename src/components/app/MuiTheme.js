@@ -1,14 +1,19 @@
-import React from "react";
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import getMuiTheme from "material-ui/styles/getMuiTheme";
+import React from 'react'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import getMuiTheme from 'material-ui/styles/getMuiTheme'
+import PropTypes from 'prop-types'
 
 export default class MuiTheme extends React.Component {
+  static propTypes = {
+    children: PropTypes.element.isRequired
+  }
+
   render() {
     const muiTheme = getMuiTheme({
       palette: {
-        primary1Color: "#A63324",
-        primary2Color: "#A63324",
-        primary3Color: "#A63324"
+        primary1Color: '#A63324',
+        primary2Color: '#A63324',
+        primary3Color: '#A63324'
       },
       datePicker: {
         overlayStyle: {
@@ -27,5 +32,5 @@ export default class MuiTheme extends React.Component {
       </div>
     )
   }
-
 }
+
