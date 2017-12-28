@@ -14,6 +14,7 @@ export default class TableElement extends React.Component {
     super(props)
 
     this.state = {
+      edit: false,
       entries: Immutable.List(),
       selected: -1
     }
@@ -60,16 +61,32 @@ export default class TableElement extends React.Component {
     )
   }
 
-  _updateDialogOpen = () => {
+  _addOrder = () => {
+    this.setState({
+      edit: false
+    })
+
     DialogActions.displayUpdateDialog(true)
   }
 
-  _removeDialogOpen = () => {
+  _removeOrder = () => {
     if (this.state.selected === undefined || this.state.selected === -1) {
       return
     }
 
     DialogActions.displayRemoveDialog(true)
+  }
+
+  _updateOrder = () => {
+    if (this.state.selected === undefined || this.state.selected === -1) {
+      return
+    }
+
+    this.setState({
+      edit: true
+    })
+
+    DialogActions.displayUpdateDialog(true)
   }
 
   render() {
@@ -98,19 +115,19 @@ export default class TableElement extends React.Component {
         </div>
         <div className="fr pr4">
           <IconButton tooltip="Bestellung hinzufügen"
-            onClick={this._updateDialogOpen}>
+            onClick={this._addOrder}>
             <FontIcon className="material-icons">add</FontIcon>
           </IconButton>
           <IconButton tooltip="Bestellung entfernen"
-            onClick={this._removeDialogOpen}>
+            onClick={this._removeOrder}>
             <FontIcon className="material-icons">remove</FontIcon>
           </IconButton>
           <IconButton tooltip="Bestellung bearbeiten"
-            onClick={this._updateDialogOpen}>
+            onClick={this._updateOrder}>
             <FontIcon className="material-icons">edit</FontIcon>
           </IconButton>
         </div>
-        <UpdateDialog/>
+        <UpdateDialog order={this.state.selected} edit={this.state.edit}/>
         <RemoveDialog order={this.state.selected}/>
       </div>
     )

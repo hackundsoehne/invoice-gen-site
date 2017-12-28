@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import FontIcon from 'material-ui/FontIcon'
@@ -8,6 +9,7 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 import * as DialogActions from '../../../actions/dialogActions'
 import * as OrderActions from '../../../actions/orderActions'
 import DialogStore from '../../../stores/dialogStore'
+import OrderStore from '../../../stores/orderStore'
 const Immutable = require('immutable')
 
 
@@ -20,6 +22,11 @@ const OrderRecord = Immutable.Record({
 
 
 export default class RemoveDialog extends React.Component {
+  static propTypes = {
+    order: PropTypes.number,
+    edit: PropTypes.bool
+  }
+
   constructor(props) {
     super(props)
 
@@ -60,7 +67,22 @@ export default class RemoveDialog extends React.Component {
   }
 
   _handleDisplay = () => {
-    this.setState({open: DialogStore.isUpdateDialogOpen()})
+    const open = DialogStore.isUpdateDialogOpen()
+
+    if (open && this.props.edit && this.props.order !== -1 && this.props.order !== undefined) {
+      const order = OrderStore.getOrder(this.props.order)
+      this.setState({
+        open: open,
+        amountText: order.amount,
+        descriptionText: order.description,
+        priceText: order.price,
+        entries: order.infos
+      })
+    } else {
+      this.setState({
+        open: open
+      })
+    }
   }
 
   _handleClose = () => {
@@ -102,7 +124,11 @@ export default class RemoveDialog extends React.Component {
       'infos': this.state.entries
     })
 
-    OrderActions.addOrder(orderRecord)
+    if (this.props.edit) {
+      OrderActions.updateOrder(this.props.order, orderRecord)
+    } else {
+      OrderActions.addOrder(orderRecord)
+    }
     DialogActions.displayUpdateDialog(false)
   }
 
@@ -128,7 +154,7 @@ export default class RemoveDialog extends React.Component {
     })
   }
 
-  _mapDataToTable = () => {
+  _fillTable = () => {
     return this.state.entries.map((entry, index) =>
       <TableRow key={index} selected={this._isSelected(index)}>
         <TableRowColumn>{entry}</TableRowColumn>
@@ -188,8 +214,6 @@ export default class RemoveDialog extends React.Component {
       />
     ]
 
-    const entries = this._mapDataToTable()
-
     return (
       <div>
         <Dialog
@@ -247,10 +271,8 @@ export default class RemoveDialog extends React.Component {
                   <TableHeaderColumn>Zusätzliche Informationen</TableHeaderColumn>
                 </TableRow>
               </TableHeader>
-              <TableBody
-                deselectOnClickaway={false}
-              >
-                {entries}
+              <TableBody deselectOnClickaway={false}>
+                {this._fillTable()}
               </TableBody>
             </Table>
 

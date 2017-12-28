@@ -9,7 +9,7 @@ import OrderStore from '../../../stores/orderStore'
 
 export default class RemoveDialog extends React.Component {
   static propTypes = {
-    order: PropTypes.element.isRequired
+    order: PropTypes.number
   }
 
   constructor(props) {
@@ -57,7 +57,7 @@ export default class RemoveDialog extends React.Component {
         onClick={this._handleRemove}
       />
     ]
-    console.log(this.props.order)
+
     const order = OrderStore.getOrder(this.props.order)
 
     let text = ''
