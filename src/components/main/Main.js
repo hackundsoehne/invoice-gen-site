@@ -1,20 +1,9 @@
 import React from 'react'
 import Form from './form/Form'
-import Table from './table/Table'
-import Confirm from './confirm/Confirm'
 
 export default class Home extends React.Component {
   constructor(props) {
     super(props)
-
-    this.state = {
-    }
-  }
-
-  componentDidMount() {
-  }
-
-  componentWillUnmount() {
   }
 
   render() {
@@ -28,8 +17,6 @@ export default class Home extends React.Component {
           <div className="main-body-intro-message" style={{display: 'table'}}>
             <div className='bf' style={{display: 'table-cell', verticalAlign: 'middle'}}>
               <Form/>
-              <Table/>
-              <Confirm/>
             </div>
           </div>
         </div>

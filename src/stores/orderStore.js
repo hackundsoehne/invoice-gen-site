@@ -2,7 +2,7 @@ import AppDispatcher from '../dispatchers/appDispatcher'
 import BaseStore from './baseStore'
 import OrderConstants from '../constants/orderConstants.js'
 import assign from 'object-assign'
-const Immutable = require('immutable')
+import Immutable from 'immutable'
 
 // Current data
 let _orders = Immutable.List()

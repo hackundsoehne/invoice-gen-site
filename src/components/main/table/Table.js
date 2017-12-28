@@ -7,7 +7,7 @@ import UpdateDialog from '../dialog/UpdateDialog'
 import RemoveDialog from '../dialog/RemoveDialog'
 import * as DialogActions from '../../../actions/dialogActions'
 import OrderStore from '../../../stores/orderStore'
-const Immutable = require('immutable')
+import Immutable from 'immutable'
 
 export default class TableElement extends React.Component {
   constructor(props) {

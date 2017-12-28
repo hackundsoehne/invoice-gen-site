@@ -10,7 +10,7 @@ import * as DialogActions from '../../../actions/dialogActions'
 import * as OrderActions from '../../../actions/orderActions'
 import DialogStore from '../../../stores/dialogStore'
 import OrderStore from '../../../stores/orderStore'
-const Immutable = require('immutable')
+import Immutable from 'immutable'
 
 
 const OrderRecord = Immutable.Record({
@@ -130,6 +130,17 @@ export default class RemoveDialog extends React.Component {
       OrderActions.addOrder(orderRecord)
     }
     DialogActions.displayUpdateDialog(false)
+
+    this.setState({
+      entries: Immutable.List(),
+      selected: -1,
+
+      amountText: '',
+      descriptionText: '',
+      priceText: '',
+      informationText: '',
+      errorText: ''
+    })
   }
 
   _addInformation = () => {
