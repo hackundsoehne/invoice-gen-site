@@ -1,5 +1,5 @@
-import AppDispatcher from "../dispatchers/appDispatcher";
-import DialogConstants from "../constants/dialogConstants";
+import AppDispatcher from '../dispatchers/appDispatcher'
+import DialogConstants from '../constants/dialogConstants'
 
 export const displayUpdateDialog = (showDialog) => {
   AppDispatcher.dispatch({

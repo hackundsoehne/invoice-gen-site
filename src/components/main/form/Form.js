@@ -1,22 +1,21 @@
-import React from "react";
+import React from 'react'
 import {DatePicker, DropDownMenu, MenuItem, TextField} from 'material-ui'
 import areIntlLocalesSupported from 'intl-locales-supported'
 
-const Immutable = require('immutable');
+const Immutable = require('immutable')
 
 export default class Home extends React.Component {
-
   /* TODO: Localize & internationalize */
   constructor(props) {
-    super(props);
+    super(props)
 
-    let DateTimeFormat;
+    let DateTimeFormat
     if (areIntlLocalesSupported(['de'])) {
-      DateTimeFormat = global.Intl.DateTimeFormat;
+      DateTimeFormat = global.Intl.DateTimeFormat
     } else {
-      const IntlPolyfill = require('intl');
-      DateTimeFormat = IntlPolyfill.DateTimeFormat;
-      require('intl/locale-data/jsonp/de');
+      const IntlPolyfill = require('intl')
+      DateTimeFormat = IntlPolyfill.DateTimeFormat
+      require('intl/locale-data/jsonp/de')
     }
 
     this.state = {
@@ -25,7 +24,7 @@ export default class Home extends React.Component {
       language: 0,
       DateTimeFormat: DateTimeFormat,
       locale: 'de',
-      source: 0,
+      source: 0
     }
   }
 
@@ -37,7 +36,7 @@ export default class Home extends React.Component {
 
   handleChange = (event, date) => {
     this.setState({
-      controlledDate: date,
+      controlledDate: date
     })
   };
 
@@ -47,7 +46,7 @@ export default class Home extends React.Component {
 
 
   render() {
-    const {hsText, hsFont, hsColor} = styles;
+    const {hsText, hsFont, hsColor} = styles
 
     return (
       <div className
@@ -56,7 +55,7 @@ export default class Home extends React.Component {
           <p className="bf">Zieldaten</p>
           <p className="bf f6 tl pt3" style={{marginBottom: '0'}}>Für:</p>
           <DropDownMenu value={this.state.source}
-                        style={{hsColor, width: 200 /* TODO adapt to largest item */}}
+                        style={{hsColor, width: 200}}
                         selectedMenuItemStyle={hsColor}
                         onChange={this._handleSourceChange}>
             <MenuItem value={0} primaryText="Hack & Söhne"/>
@@ -64,7 +63,7 @@ export default class Home extends React.Component {
           </DropDownMenu>
           <p className="bf f6 tl pt3" style={{marginBottom: '0'}}>Zielsprache:</p>
           <DropDownMenu value={this.state.language}
-                        style={{hsColor, width: 200 /* TODO adapt to largest item */}}
+                        style={{hsColor, width: 200}}
                         selectedMenuItemStyle={hsColor}
                         onChange={this._handleLanguageChange}>
             <MenuItem value={0} primaryText="Deutsch"/>
@@ -137,9 +136,9 @@ export default class Home extends React.Component {
             hintText="Kooperationsleistungsdatum"
             inputStyle={hsText}
             hintStyle={hsFont}
-            floatingLabelText={"Wann hast du die Zusage bekommen?"}
+            floatingLabelText={'Wann hast du die Zusage bekommen?'}
             floatingLabelFixed={true}
-            floatingLabelStyle={{color: "#212121", width: '275px'}}
+            floatingLabelStyle={{color: '#212121', width: '275px'}}
             errorText={this.state.company_name}
             DateTimeFormat={this.state.DateTimeFormat}
             locale={this.state.locale}
@@ -148,9 +147,9 @@ export default class Home extends React.Component {
             hintText="Überweisungsdatum"
             inputStyle={hsText}
             hintStyle={hsFont}
-            floatingLabelText={"Bis wann muss das Geld überwiesen sein?"}
+            floatingLabelText={'Bis wann muss das Geld überwiesen sein?'}
             floatingLabelFixed={true}
-            floatingLabelStyle={{color: "#212121", width: '306px'}}
+            floatingLabelStyle={{color: '#212121', width: '306px'}}
             errorText={this.state.company_name}
             DateTimeFormat={this.state.DateTimeFormat}
             locale={this.state.locale}
@@ -163,13 +162,13 @@ export default class Home extends React.Component {
 
 const styles = {
   hsFont: {
-    fontFamily: "Source Sans Pro",
+    fontFamily: 'Source Sans Pro'
   },
   hsColor: {
-    color: "#A63324",
+    color: '#A63324'
   },
   hsText: {
-    color: "#A63324",
-    fontFamily: "Source Sans Pro",
-  },
-};
+    color: '#A63324',
+    fontFamily: 'Source Sans Pro'
+  }
+}

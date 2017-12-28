@@ -1,11 +1,11 @@
-import AppDispatcher from "../dispatchers/appDispatcher";
-import BaseStore from "./baseStore";
-import DialogConstants from "../constants/dialogConstants.js";
-import assign from "object-assign";
+import AppDispatcher from '../dispatchers/appDispatcher'
+import BaseStore from './baseStore'
+import DialogConstants from '../constants/dialogConstants.js'
+import assign from 'object-assign'
 
 // Current data
-var _showUpdateDialog = false
-var _showRemoveDialog = false
+let _showUpdateDialog = false
+let _showRemoveDialog = false
 
 const DialogStore = assign({}, BaseStore, {
   setUpdateDialog(showDialog) {
@@ -20,10 +20,10 @@ const DialogStore = assign({}, BaseStore, {
   },
   isRemoveDialogOpen() {
     return _showRemoveDialog
-  },
-});
+  }
+})
 
-AppDispatcher.register(action => {
+AppDispatcher.register((action) => {
   switch (action.actionType) {
     case DialogConstants.DISPLAY_UPDATE_DIALOG:
       DialogStore.setUpdateDialog(action.showDialog)

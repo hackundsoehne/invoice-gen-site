@@ -1,24 +1,24 @@
-import AppDispatcher from "../dispatchers/appDispatcher";
-import FetchConstants from "../constants/fetchConstants.js";
-import {sendRequest, fetchNextPage} from "../services/fetchService";
-import {startLoadingAnimation, endLoadingAnimation} from "./loadAnimationActions";
+import AppDispatcher from '../dispatchers/appDispatcher'
+import FetchConstants from '../constants/fetchConstants.js'
+import {sendRequest, fetchNextPage} from '../services/fetchService'
+import {startLoadingAnimation, endLoadingAnimation} from './loadAnimationActions'
 
-export var initFetch = function (code, type, page) {
+export var initFetch = function(code, type, page) {
   let action = {
     actionType: FetchConstants.FETCH_INIT,
     code: code,
     type: type,
-    page: pagection RecentFiles
+    page: page
   }
   startLoadingAnimation()
   sendRequest(action)
 }
 
-export var loadNextPage = function () {
+export var loadNextPage = function() {
   fetchNextPage()
 }
 
-export var fetchSuccess = function (results, page) {
+export var fetchSuccess = function(results, page) {
   endLoadingAnimation()
   AppDispatcher.dispatch({
     actionType: FetchConstants.FETCH_SUCCESS,
@@ -27,7 +27,7 @@ export var fetchSuccess = function (results, page) {
   })
 }
 
-export var fetchError = function (error) {
+export var fetchError = function(error) {
   endLoadingAnimation()
   AppDispatcher.dispatch({
     actionType: FetchConstants.FETCH_ERROR,
@@ -35,7 +35,7 @@ export var fetchError = function (error) {
   })
 }
 
-export var nextPageSuccess = function (results, page) {
+export var nextPageSuccess = function(results, page) {
   AppDispatcher.dispatch({
     actionType: FetchConstants.NEXT_PAGE_SUCCESS,
     results: results,

@@ -1,9 +1,8 @@
 import React from 'react'
 import {RaisedButton} from 'material-ui'
-const Immutable = require('immutable');
+const Immutable = require('immutable')
 
 export default class Home extends React.Component {
-
   constructor(props) {
     super(props)
 
@@ -21,8 +20,8 @@ export default class Home extends React.Component {
 
   handleChange = (event, date) => {
     this.setState({
-      controlledDate: date,
-    });
+      controlledDate: date
+    })
   };
 
   render() {

@@ -6,18 +6,38 @@ import IconButton from 'material-ui/IconButton'
 import {TextField} from 'material-ui'
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table'
 import * as DialogActions from '../../../actions/dialogActions'
+import * as OrderActions from '../../../actions/orderActions'
 import DialogStore from '../../../stores/dialogStore'
 const Immutable = require('immutable')
+
+
+const OrderRecord = Immutable.Record({
+  'amount': '',
+  'description': '',
+  'price': '',
+  'infos': Immutable.List()
+})
+
 
 export default class RemoveDialog extends React.Component {
   constructor(props) {
     super(props)
 
+
     this.state = {
       open: false,
       entries: Immutable.List(),
-      selected: [],
-      informationText: ''
+      selected: -1,
+
+      amountText: '',
+      descriptionText: '',
+      priceText: '',
+      informationText: '',
+      errorText: '',
+
+      amountErrorText: '',
+      descriptionErrorText: '',
+      priceErrorText: ''
     }
   }
 
@@ -30,20 +50,59 @@ export default class RemoveDialog extends React.Component {
   }
 
   _isSelected = (index) => {
-    return this.state.selected.indexOf(index) !== -1
+    return this.state.selected === index
   }
 
-  _handleRowSelection = (selectedRows) => {
+  _handleRowSelection = (selectedRow) => {
     this.setState({
-      selected: selectedRows,
+      selected: selectedRow[0]
     })
   }
 
   _handleDisplay = () => {
-    this.setState({open: DialogStore.isUpdateDialogOpen()});
+    this.setState({open: DialogStore.isUpdateDialogOpen()})
   }
 
   _handleClose = () => {
+    DialogActions.displayUpdateDialog(false)
+  }
+
+  _handleSubmit = () => {
+    let error = false
+
+    if (this.state.amountText === '') {
+      error = true
+      this.setState({
+        amountErrorText: 'vorausgesetzt'
+      })
+    }
+
+    if (this.state.descriptionText === '') {
+      error = true
+      this.setState({
+        descriptionErrorText: 'vorausgesetzt'
+      })
+    }
+
+    if (this.state.priceText === '') {
+      error = true
+      this.setState({
+        priceErrorText: 'vorausgesetzt'
+      })
+    }
+
+    if (error) {
+      return
+    }
+
+    const orderRecord = new OrderRecord({
+      'amount': this.state.amountText,
+      'description': this.state.descriptionText,
+      'price': this.state.priceText,
+      'infos': this.state.entries
+    })
+
+    OrderActions.addOrder(orderRecord)
     DialogActions.displayUpdateDialog(false)
   }
 
@@ -64,8 +123,8 @@ export default class RemoveDialog extends React.Component {
     }
 
     this.setState({
-      entries: this.state.entries.delete(this.state.selected[0]),
-      selected: []
+      entries: this.state.entries.delete(this.state.selected),
+      selected: -1
     })
   }
 
@@ -75,6 +134,27 @@ export default class RemoveDialog extends React.Component {
         <TableRowColumn>{entry}</TableRowColumn>
       </TableRow>
     )
+  }
+
+  _handleAmountTextFieldChange = (e) => {
+    this.setState({
+      amountText: e.target.value,
+      amountErrorText: ''
+    })
+  }
+
+  _handleDescriptionTextFieldChange = (e) => {
+    this.setState({
+      descriptionText: e.target.value,
+      descriptionErrorText: ''
+    })
+  }
+
+  _handlePriceTextFieldChange = (e) => {
+    this.setState({
+      priceText: e.target.value,
+      priceErrorText: ''
+    })
   }
 
   _handleInformationTextFieldChange = (e) => {
@@ -90,20 +170,22 @@ export default class RemoveDialog extends React.Component {
   }
 
   render() {
-    const {hsText, hsFont, hsColor} = styles;
+    const {hsText, hsFont} = styles
 
     const actions = [
       <FlatButton
+        key={0}
         label="Cancel"
         primary={true}
         onClick={this._handleClose}
       />,
       <FlatButton
+        key={1}
         label="Submit"
         primary={true}
         keyboardFocused={true}
-        onClick={this._handleClose}
-      />,
+        onClick={this._handleSubmit}
+      />
     ]
 
     const entries = this._mapDataToTable()
@@ -117,50 +199,45 @@ export default class RemoveDialog extends React.Component {
           open={this.state.open}
         >
           <TextField
-            hintText="Position"
-            inputStyle={hsText}
-            hintStyle={hsFont}
-            style={{
-              width: '60px',
-              marginLeft: '6px',
-              marginRight: '6px'
-            }}
-            errorText={this.state.company_name}
-          />
-          <TextField
+            value={this.state.amountText}
             hintText="Menge"
             inputStyle={hsText}
             hintStyle={hsFont}
+            onChange={this._handleAmountTextFieldChange}
             style={{
               width: '60px',
               marginLeft: '6px',
               marginRight: '6px'
             }}
-            errorText={this.state.company_name}
+            errorText={this.state.amountErrorText}
           />
           <TextField
+            value={this.state.descriptionText}
             hintText="Bezeichnung"
             inputStyle={hsText}
             hintStyle={hsFont}
-            floatingLabelText={"e.g. 'Basic Sponsoring'"}
+            floatingLabelText={'e.g. \'Basic Sponsoring\''}
             floatingLabelFixed={true}
+            onChange={this._handleDescriptionTextFieldChange}
             style={{
               width: '450px',
               marginLeft: '6px',
               marginRight: '6px'
             }}
-            errorText={this.state.company_name}
+            errorText={this.state.descriptionErrorText}
           />
           <TextField
+            value={this.state.priceText}
             hintText="Betrag (EUR)"
             inputStyle={hsText}
             hintStyle={hsFont}
+            onChange={this._handlePriceTextFieldChange}
             style={{
               width: '100px',
               marginLeft: '6px',
               marginRight: '6px'
             }}
-            errorText={this.state.company_name}
+            errorText={this.state.priceErrorText}
           /><br/>
 
           <div className="pt4 pb4">
@@ -212,13 +289,13 @@ export default class RemoveDialog extends React.Component {
 
 const styles = {
   hsFont: {
-    fontFamily: "Source Sans Pro",
+    fontFamily: 'Source Sans Pro'
   },
   hsColor: {
-    color: "#A63324",
+    color: '#A63324'
   },
   hsText: {
-    color: "#A63324",
-    fontFamily: "Source Sans Pro",
-  },
-};
+    color: '#A63324',
+    fontFamily: 'Source Sans Pro'
+  }
+}

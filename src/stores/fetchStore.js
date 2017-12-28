@@ -1,19 +1,19 @@
-import AppDispatcher from "../dispatchers/appDispatcher";
-import BaseStore from "./baseStore";
-import FetchConstants from "../constants/fetchConstants.js";
-import assign from "object-assign";
+import AppDispatcher from '../dispatchers/appDispatcher'
+import BaseStore from './baseStore'
+import FetchConstants from '../constants/fetchConstants.js'
+import assign from 'object-assign'
 
 // Current settings
-var _code = ""
-var _type = ""
-var _page = 0
-var _counter = 1
+let _code = ''
+let _type = ''
+let _page = 0
+let _counter = 1
 
 // Current data
-var _codeSamples = []
-var _error = ""
+let _codeSamples = []
+let _error = ''
 
-var FetchStore = assign({}, BaseStore, {
+let FetchStore = assign({}, BaseStore, {
   setCode(code) {
     _code = code
   },
@@ -55,15 +55,15 @@ var FetchStore = assign({}, BaseStore, {
   getError() {
     return _error
   }
-});
+})
 
-AppDispatcher.register(function (action) {
+AppDispatcher.register(function(action) {
   switch (action.actionType) {
     case FetchConstants.FETCH_SUCCESS:
       if (action.results.size !== 0) {
         FetchStore.setCodeSamples(action.results)
         FetchStore.setPage(action.page)
-        FetchStore.setError("")
+        FetchStore.setError('')
         FetchStore.emitChange()
       }
       break
@@ -72,12 +72,12 @@ AppDispatcher.register(function (action) {
         let results = [].concat(FetchStore.getCodeSamples(), action.results)
         FetchStore.setCodeSamples(results)
         FetchStore.setPage(action.page)
-        FetchStore.setError("")
+        FetchStore.setError('')
         FetchStore.emitChange()
       }
       break
     case FetchConstants.FETCH_ERROR:
-      if (action.error !== "") {
+      if (action.error !== '') {
         FetchStore.setError(action.error)
         FetchStore.emitChange()
       }
