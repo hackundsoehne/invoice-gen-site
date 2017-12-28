@@ -63,11 +63,20 @@ export default class Home extends React.Component {
   }
 
   componentDidMount() {
+    OrderStore.addChangeListener(this._handleOrderChange)
   }
 
   componentWillUnmount() {
+    OrderStore.removeChangeListener(this._handleOrderChange)
   }
 
+  _handleOrderChange = () => {
+    if (OrderStore.getOrders().size > 0) {
+      this.setState({
+        errorText: ''
+      })
+    }
+  }
 
   _handleLanguageChange = (event, index, value) => {
     let locale = 'de'
