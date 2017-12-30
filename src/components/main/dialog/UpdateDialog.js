@@ -73,9 +73,9 @@ export default class RemoveDialog extends React.Component {
       const order = OrderStore.getOrder(this.props.order)
       this.setState({
         open: open,
-        amountText: order.amount,
+        amountText: order.amount + '',
         descriptionText: order.description,
-        priceText: order.price,
+        priceText: order.price + '',
         entries: order.infos
       })
     } else {
@@ -106,10 +106,24 @@ export default class RemoveDialog extends React.Component {
       })
     }
 
+    if (isNaN(parseInt(this.state.amountText))) {
+      error = true
+      this.setState({
+        amountErrorText: 'Bitte gebe eine Zahl ein'
+      })
+    }
+
     if (this.state.priceText === '') {
       error = true
       this.setState({
         priceErrorText: 'vorausgesetzt'
+      })
+    }
+
+    if (isNaN(parseInt(this.state.priceText))) {
+      error = true
+      this.setState({
+        priceErrorText: 'Bitte gebe eine Zahl ein'
       })
     }
 
@@ -118,9 +132,9 @@ export default class RemoveDialog extends React.Component {
     }
 
     const orderRecord = new OrderRecord({
-      'amount': this.state.amountText,
+      'amount': parseInt(this.state.amountText),
       'description': this.state.descriptionText,
-      'price': this.state.priceText,
+      'price': parseInt(this.state.priceText),
       'infos': this.state.entries
     })
 

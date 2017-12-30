@@ -4,6 +4,7 @@ import areIntlLocalesSupported from 'intl-locales-supported'
 import Table from '../table/Table'
 import OrderStore from '../../../stores/orderStore'
 import Immutable from 'immutable'
+import fetch from 'isomorphic-fetch'
 
 const FormRecord = Immutable.Record({
   'target': '',
@@ -170,7 +171,7 @@ export default class Home extends React.Component {
     }
 
     const formRecord = new FormRecord({
-      'target': this.state.source,
+      'target': parseInt(this.state.source),
       'locale': this.state.locale,
       'company': this.state.companyText,
       'person': this.state.personText,
@@ -186,9 +187,22 @@ export default class Home extends React.Component {
 
     console.log(formRecord.toJS())
 
-    this.setState({
-
+    fetch('http://localhost:3001/invoice', {
+      method: 'POST',
+      body: JSON.stringify(formRecord.toJSON())
     })
+
+    // let xmlhttp = new XMLHttpRequest()
+    // xmlhttp.open('POST', 'http://localhost:3001/invoice')
+    // xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
+    //
+    // xmlhttp.onreadystatechange = () => {
+    //   if (xmlhttp.readyState === XMLHttpRequest.DONE) {
+    //     console.log(xmlhttp.response)
+    //   }
+    // }
+
+    // xmlhttp.send(JSON.stringify(formRecord.toJSON()))
   }
 
   _handleSourceChange = (event, index, value) => this.setState({source: value});
@@ -291,7 +305,7 @@ export default class Home extends React.Component {
             </div>
             <TextField
               value={this.state.countryText}
-              hintText="Land (optional)"
+              hintText="Land"
               inputStyle={hsText}
               hintStyle={hsFont}
               onChange={this._handleCountryTextChange}

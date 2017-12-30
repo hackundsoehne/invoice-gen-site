@@ -21,10 +21,11 @@
   "homepage": "https://hackundsoehne.de",
   "engines": {
     "npm": ">=3.0.0",
-    "node": ">=5.0.0"
+    "node": ">=7.0.0"
   },
   "dependencies": {
     "auto-format": "^1.0.0",
+    "es6-promise": "^4.2.2",
     "eventemitter3": "^3.0.0",
     "events": "^1.1.1",
     "express": "^4.14.0",
@@ -32,6 +33,7 @@
     "immutable": "^3.8.1",
     "intl": "^1.2.5",
     "intl-locales-supported": "^1.0.0",
+    "isomorphic-fetch": "^2.2.1",
     "material-ui": "^0.19.4",
     "object-assign": "^4.1.0",
     "react": "16.2.0",
